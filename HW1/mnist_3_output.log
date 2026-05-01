@@ -1,0 +1,21 @@
+MNIST train stats: mean=0.1307, std=0.3081
+
+=== deeper MLP (784 -> 500 -> 10), 397,510 params ===
+    epochs=100, bs=128, optimizer=Adam(lr=0.001), normalize=True
+  epoch   1/100  loss=0.2359
+  epoch  10/100  loss=0.0139
+  epoch  20/100  loss=0.0069
+  epoch  30/100  loss=0.0043
+  epoch  40/100  loss=0.0036
+  epoch  50/100  loss=0.0029
+  epoch  60/100  loss=0.0048
+  epoch  70/100  loss=0.0038
+  epoch  80/100  loss=0.0015
+  epoch  90/100  loss=0.0035
+  epoch 100/100  loss=0.0012
+  final test acc = 98.19%   saved to ./models/mnist_3_deeper.pkl
+
+Loss curve saved to ./loss_curve_mnist_3.png
+
+--- summary ---
+deeper MLP 784-500-10   test_acc=98.19%
