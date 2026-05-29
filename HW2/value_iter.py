@@ -142,3 +142,24 @@ for i, (V, pi) in enumerate(zip(Vs_VI[:20], pis_VI[:20])):
     ## save each fig with the iteration number
     plt.savefig(f'./figs/value_iter_{i+1}.png')
     plt.close()
+
+#################################
+# Plot each state's value as a function of iteration (one curve per state).
+Vs_arr = np.array(Vs_VI)  # shape: (nIt+1, nS)
+iterations = np.arange(Vs_arr.shape[0])
+
+plt.figure(figsize=(10, 6))
+cmap = plt.get_cmap('tab20', mdp.nS)
+for s in range(mdp.nS):
+    plt.plot(iterations, Vs_arr[:, s], marker='o', markersize=3,
+             color=cmap(s), label=f'V[{s}]')
+
+plt.xlabel('Iteration')
+plt.ylabel('State Value')
+plt.title("State values vs. iteration (Value Iteration, $\\gamma=%.2f$)" % GAMMA)
+plt.xticks(iterations)
+plt.grid(True, ls='--', alpha=0.5)
+plt.legend(loc='center left', bbox_to_anchor=(1.02, 0.5), ncol=1, fontsize=9)
+plt.tight_layout()
+plt.savefig('./figs/state_values_vs_iter.png', dpi=150, bbox_inches='tight')
+plt.close()
