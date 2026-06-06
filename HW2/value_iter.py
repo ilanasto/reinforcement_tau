@@ -1,7 +1,7 @@
 ##################################
 # Create env
 import gymnasium as gym
-env = gym.make('FrozenLake-v1')
+env = gym.make('FrozenLake-v1', is_slippery=True)
 env = env.unwrapped
 print(env.__doc__)
 print("")
