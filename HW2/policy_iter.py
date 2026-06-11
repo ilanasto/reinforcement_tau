@@ -64,10 +64,6 @@ print("")
 # Programing Question No. 2, part 1 - implement where required.
 
 def compute_vpi(pi, mdp, gamma):
-    # use pi[state] to access the action that's prescribed by this policy
-    # V = np.ones(mdp.nS) # REPLACE THIS LINE WITH YOUR CODE
-    ### (I - gamma * P) * V = R
-    ### need to compute P and R for each state
     P = np.zeros((mdp.nS, mdp.nS))
     R = np.zeros(mdp.nS)
     for state in range(mdp.nS):
@@ -75,6 +71,7 @@ def compute_vpi(pi, mdp, gamma):
         for (prob, nextstate, reward, done) in mdp.P[state][action]:
             P[state][nextstate] += prob
             R[state] += prob * reward
+    # Exact policy evaluation: (I - gamma * P_pi) V = R_pi
     V = np.linalg.solve(np.eye(mdp.nS) - gamma * P, R)
     return V
 
@@ -85,7 +82,7 @@ print("Policy Value: ", actual_val)
 # Programing Question No. 2, part 2 - implement where required.
 
 def compute_qpi(vpi, mdp, gamma):
-    Qpi = np.zeros([mdp.nS, mdp.nA]) # REPLACE THIS LINE WITH YOUR CODE
+    Qpi = np.zeros([mdp.nS, mdp.nA])
     for state in range(mdp.nS):
         for action in range(mdp.nA):
             for (prob, nextstate, reward, done) in mdp.P[state][action]:
@@ -107,11 +104,8 @@ def policy_iteration(mdp, gamma, nIt):
     print("Iteration | # chg actions | V[0]")
     print("----------+---------------+---------")
     for it in range(nIt):
-        # YOUR CODE HERE
-        # you need to compute qpi which is the state-action values for current pi
         vpi = compute_vpi(pi_prev, mdp, gamma)
         qpi = compute_qpi(vpi, mdp, gamma)
-        ## take pi as argmax (action with highest qpi value) for each state
         pi = np.argmax(qpi, axis=1)
         print("%4i      | %6i        | %6.5f"%(it, (pi != pi_prev).sum(), vpi[0]))
         Vs.append(vpi)
@@ -128,4 +122,6 @@ plt.title("Policy Iteration: State values vs Iteration")
 plt.legend(["State %i" % i for i in range(mdp.nS)], loc="upper left", bbox_to_anchor=(1,1), fontsize="small", title="States")
 plt.grid(True)
 plt.tight_layout()
+import os
+os.makedirs("./figs", exist_ok=True)
 plt.savefig("./figs/policy_iter_Vs_PI.png", bbox_inches="tight")
